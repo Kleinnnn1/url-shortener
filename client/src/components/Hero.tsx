@@ -20,17 +20,37 @@ export default function Hero({ onShorten }: Props) {
     }
   };
 
-  const handleShorten = () => {
+  const handleShorten = async () => {
     if (!url) return setError("Please enter a URL.");
     if (!isValidUrl(url))
       return setError("Please enter a valid URL including https://");
 
     setError("");
-    const code = Math.random().toString(36).substring(2, 8);
-    const shortened = `shrt.ly/${code}`;
-    setResult(shortened);
-    onShorten({ short: shortened, original: url, clicks: 0 });
-    setUrl("");
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/links/shorten`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ originalUrl: url }),
+        },
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) return setError(data.error || "Something went wrong.");
+
+      setResult(`${import.meta.env.VITE_API_URL}/${data.shortCode}`);
+      onShorten({
+        short: data.shortCode,
+        original: data.originalUrl,
+        clicks: data.clicks,
+      });
+      setUrl("");
+    } catch {
+      setError("Could not connect to server.");
+    }
   };
 
   const handleCopy = () => {
@@ -41,7 +61,6 @@ export default function Hero({ onShorten }: Props) {
 
   return (
     <div className="w-full max-w-xl flex flex-col items-center mb-10">
-        
       <p
         className="text-xs tracking-widest uppercase mb-4"
         style={{ color: "rgba(180,160,255,0.6)" }}
@@ -68,7 +87,6 @@ export default function Hero({ onShorten }: Props) {
           WebkitBackdropFilter: "blur(12px)",
         }}
       >
-
         <div className="flex gap-3">
           <input
             type="text"

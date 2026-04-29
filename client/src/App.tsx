@@ -1,26 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Hero from "./components/Hero";
 import RecentLinks from "./components/RecentLinks";
 import type { Link } from "./types";
 
 export default function App() {
-  const [links, setLinks] = useState<Link[]>([
-    {
-      short: "shrt.ly/x9k2pq",
-      original: "https://github.com/yourname/url-shortener-project",
-      clicks: 142,
-    },
-    {
-      short: "shrt.ly/m3nwrt",
-      original: "https://www.figma.com/file/abc123/design-system-portfolio",
-      clicks: 87,
-    },
-    {
-      short: "shrt.ly/p7qlza",
-      original: "https://vercel.app/deployments/tinkerpro-dashboard",
-      clicks: 31,
-    },
-  ]);
+  const [links, setLinks] = useState<Link[]>([]);
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/api/links`)
+      .then((res) => res.json())
+      .then((data) => {
+        const mapped = data.map(
+          (item: {
+            shortCode: string;
+            originalUrl: string;
+            clicks: number;
+          }) => ({
+            short: item.shortCode,
+            original: item.originalUrl,
+            clicks: item.clicks,
+          }),
+        );
+        setLinks(mapped);
+      })
+      .catch(() => console.error("Failed to fetch links"));
+  }, []);
 
   const addLink = (newLink: Link) => {
     setLinks((prev) => [newLink, ...prev]);
