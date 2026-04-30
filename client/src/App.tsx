@@ -16,7 +16,7 @@ export default function App() {
             originalUrl: string;
             clicks: number;
           }) => ({
-            short: item.shortCode,
+            short: `${import.meta.env.VITE_API_URL}/${item.shortCode}`,
             original: item.originalUrl,
             clicks: item.clicks,
           }),

@@ -26,7 +26,6 @@ export default function Hero({ onShorten }: Props) {
       return setError("Please enter a valid URL including https://");
 
     setError("");
-
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/links/shorten`,
@@ -36,14 +35,12 @@ export default function Hero({ onShorten }: Props) {
           body: JSON.stringify({ originalUrl: url }),
         },
       );
-
       const data = await response.json();
-
       if (!response.ok) return setError(data.error || "Something went wrong.");
-
-      setResult(`${import.meta.env.VITE_API_URL}/${data.shortCode}`);
+      const fullShort = `${import.meta.env.VITE_API_URL}/${data.shortCode}`;
+      setResult(fullShort);
       onShorten({
-        short: data.shortCode,
+        short: fullShort,
         original: data.originalUrl,
         clicks: data.clicks,
       });
@@ -61,32 +58,27 @@ export default function Hero({ onShorten }: Props) {
 
   return (
     <div className="w-full max-w-xl flex flex-col items-center mb-10">
+
       <p
         className="text-xs tracking-widest uppercase mb-4"
-        style={{ color: "rgba(180,160,255,0.6)" }}
+        style={{ color: "#00d4aa" }}
       >
         URL Shortener
       </p>
 
+      {/* Heading */}
       <h1 className="text-3xl font-semibold text-white text-center mb-2">
         Shorten any link instantly
       </h1>
-      <p
-        className="text-sm text-center mb-8"
-        style={{ color: "rgba(255,255,255,0.35)" }}
-      >
+      <p className="text-sm text-center mb-8" style={{ color: "#444" }}>
         Paste your long URL and get a clean, shareable link
       </p>
 
       <div
         className="w-full rounded-2xl p-6"
-        style={{
-          background: "rgba(255,255,255,0.06)",
-          border: "1px solid rgba(255,255,255,0.12)",
-          backdropFilter: "blur(12px)",
-          WebkitBackdropFilter: "blur(12px)",
-        }}
+        style={{ background: "#111", border: "1px solid #1e1e1e" }}
       >
+
         <div className="flex gap-3">
           <input
             type="text"
@@ -99,65 +91,49 @@ export default function Hero({ onShorten }: Props) {
             placeholder="https://your-long-url.com/..."
             className="flex-1 h-11 rounded-lg px-4 text-sm outline-none"
             style={{
-              background: "rgba(255,255,255,0.07)",
-              border: "1px solid rgba(255,255,255,0.12)",
-              color: "rgba(255,255,255,0.8)",
+              background: "#0f0f0f",
+              border: "1px solid #1e1e1e",
+              color: "#fff",
             }}
           />
           <button
             onClick={handleShorten}
             className="h-11 px-5 rounded-lg text-sm font-medium transition-all duration-200"
-            style={{
-              background: "rgba(160,130,255,0.25)",
-              border: "1px solid rgba(160,130,255,0.4)",
-              color: "rgba(200,180,255,0.9)",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.background = "rgba(160,130,255,0.4)")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.background = "rgba(160,130,255,0.25)")
-            }
+            style={{ background: "#00d4aa", color: "#003d2e" }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#00bfa0")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "#00d4aa")}
           >
-            Shorten ↗
+            Shorten
           </button>
         </div>
 
         {/* Error */}
         {error && (
-          <p
-            className="text-xs mt-2"
-            style={{ color: "rgba(255,100,100,0.8)" }}
-          >
+          <p className="text-xs mt-2" style={{ color: "#f87171" }}>
             {error}
           </p>
         )}
 
+        {/* Result */}
         {result && (
           <>
             <hr
               className="my-5"
-              style={{
-                border: "none",
-                borderTop: "1px solid rgba(255,255,255,0.07)",
-              }}
+              style={{ border: "none", borderTop: "1px solid #1e1e1e" }}
             />
             <p
               className="text-xs tracking-widest uppercase mb-3"
-              style={{ color: "rgba(255,255,255,0.25)" }}
+              style={{ color: "#333" }}
             >
               Your shortened link
             </p>
             <div
               className="flex items-center justify-between rounded-lg px-4 py-3"
-              style={{
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.1)",
-              }}
+              style={{ background: "#0f0f0f", border: "1px solid #1e1e1e" }}
             >
               <span
                 className="text-sm font-medium"
-                style={{ color: "rgba(180,160,255,0.9)" }}
+                style={{ color: "#00d4aa" }}
               >
                 {result}
               </span>
@@ -165,11 +141,9 @@ export default function Hero({ onShorten }: Props) {
                 onClick={handleCopy}
                 className="text-xs rounded px-3 py-1 transition-all duration-150"
                 style={{
-                  color: copied
-                    ? "rgba(100,220,150,0.9)"
-                    : "rgba(255,255,255,0.4)",
-                  background: "rgba(255,255,255,0.07)",
-                  border: "1px solid rgba(255,255,255,0.1)",
+                  color: copied ? "#00d4aa" : "#555",
+                  background: "#161616",
+                  border: "1px solid #1e1e1e",
                 }}
               >
                 {copied ? "Copied!" : "Copy"}
