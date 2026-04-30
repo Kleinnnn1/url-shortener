@@ -5,6 +5,7 @@ import type { Link } from "./types";
 
 export default function App() {
   const [links, setLinks] = useState<Link[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/api/links`)
@@ -23,7 +24,8 @@ export default function App() {
         );
         setLinks(mapped);
       })
-      .catch(() => console.error("Failed to fetch links"));
+      .catch(() => console.error("Failed to fetch links"))
+      .finally(() => setLoading(false));
   }, []);
 
   const addLink = (newLink: Link) => {
@@ -33,7 +35,7 @@ export default function App() {
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-start py-16 px-4">
       <Hero onShorten={addLink} />
-      <RecentLinks links={links} />
+      <RecentLinks links={links} loading={loading} />
     </div>
   );
 }

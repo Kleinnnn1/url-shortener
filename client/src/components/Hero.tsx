@@ -66,7 +66,6 @@ export default function Hero({ onShorten }: Props) {
         URL Shortener
       </p>
 
-      {/* Heading */}
       <h1 className="text-3xl font-semibold text-white text-center mb-2">
         Shorten any link instantly
       </h1>
@@ -81,6 +80,7 @@ export default function Hero({ onShorten }: Props) {
 
         <div className="flex gap-3">
           <input
+            id="form"
             type="text"
             value={url}
             onChange={(e) => {
@@ -107,14 +107,12 @@ export default function Hero({ onShorten }: Props) {
           </button>
         </div>
 
-        {/* Error */}
         {error && (
           <p className="text-xs mt-2" style={{ color: "#f87171" }}>
             {error}
           </p>
         )}
 
-        {/* Result */}
         {result && (
           <>
             <hr
