@@ -4,3 +4,12 @@ body {
   min-height: 100vh;
   background: #0a0a0a;
 }
+
+footer {
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+footer:hover {
+  opacity: 1;
+}

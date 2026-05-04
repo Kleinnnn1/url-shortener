@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Hero from "./components/Hero";
 import RecentLinks from "./components/RecentLinks";
 import type { Link } from "./types";
+import Footer from "./components/Footer";
 
 export default function App() {
   const [links, setLinks] = useState<Link[]>([]);
@@ -36,6 +37,7 @@ export default function App() {
     <div className="min-h-screen w-full flex flex-col items-center justify-start py-16 px-4">
       <Hero onShorten={addLink} />
       <RecentLinks links={links} loading={loading} />
+      <Footer />
     </div>
   );
 }
