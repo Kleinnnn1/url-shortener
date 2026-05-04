@@ -185,6 +185,7 @@ npm run build
 ## Author
 
 Kenneth Jhun N. Balino
+
 Full Stack Developer
 
 Built with React, Node.js, Express, Prisma, and Supabase
